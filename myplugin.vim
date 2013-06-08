@@ -1,3 +1,8 @@
+if exists("g:loaded_myplugin")
+  finish
+endif
+let g:loaded_myplugin = 1
+
 function! s:open_url(query, url)
   let url = substitute(a:url, '{query}', s:encode_url(a:query), '')
   let command = 'open ' . shellescape(url)
