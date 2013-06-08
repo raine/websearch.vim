@@ -15,7 +15,7 @@ function! s:encode_url(str)
       use URI::Escape;
 
       $str = VIM::Eval('a:str');
-      $str =~ s/^\s+|\s+$//g ; 
+      $str =~ s/^\s+|\s+$//g;
       $escaped = uri_escape($str);
 
       VIM::DoCommand "let str='$escaped'";
@@ -31,7 +31,7 @@ endfunction
 function! s:run_mapping(i, ...)
   let [ key, name, url ] = g:plugin_url_mappings[a:i]
 
-  if len(a:000) > 0 
+  if len(a:000) > 0
     let query = a:000[0]
   else
     let query = s:prompt(name)
@@ -69,5 +69,30 @@ function! s:create_mappings()
     execute 'vnoremap <silent>' key ':<C-U>call <SID>visual_mode(visualmode(), ' . i . ')<CR>'
   endfor
 endfunction
+
+function! s:MyPluginDefault(arg)
+  if exists('b:myplugin_url_default')
+    let default = b:myplugin_url_default
+  elseif exists('g:myplugin_url_default')
+    let default = g:myplugin_url_default
+  else
+    echom 'g:myplugin_url_default not set'
+    return
+  end
+
+  if a:arg ==# 'v'
+    call s:visual_mode(visualmode(), default)
+  else
+    if len(a:arg) > 0
+      let query = expand(a:arg)
+    else
+      let query = expand('<cword>')
+    endif
+
+    call s:run_mapping(default, query)
+  endif
+endfunction
+
+command! -nargs=? MyPlugin call s:MyPluginDefault(<q-args>)
 
 call s:create_mappings()
