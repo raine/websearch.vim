@@ -1,7 +1,7 @@
-if exists("g:loaded_myplugin")
+if exists("g:loaded_websearch")
   finish
 endif
-let g:loaded_myplugin = 1
+let g:loaded_websearch = 1
 
 function! s:open_url(query, url)
   let url = substitute(a:url, '{query}', s:encode_url(a:query), '')
@@ -29,7 +29,7 @@ function! s:prompt(name)
 endfunction
 
 function! s:run_mapping(i, ...)
-  let [ key, name, url ] = g:plugin_url_mappings[a:i]
+  let [ key, name, url ] = g:websearch_mappings[a:i]
 
   if len(a:000) > 0
     let query = a:000[0]
@@ -63,20 +63,20 @@ function! s:visual_mode(type, i)
 endfunction
 
 function! s:create_mappings()
-  for i in range(0, len(g:plugin_url_mappings)-1)
-    let key = g:plugin_url_mappings[i][0]
+  for i in range(0, len(g:websearch_mappings)-1)
+    let key = g:websearch_mappings[i][0]
     execute 'nnoremap <silent>' key ':call <SID>run_mapping(' . i . ')<CR>'
     execute 'vnoremap <silent>' key ':<C-U>call <SID>visual_mode(visualmode(), ' . i . ')<CR>'
   endfor
 endfunction
 
-function! s:MyPluginDefault(arg)
-  if exists('b:myplugin_url_default')
-    let default = b:myplugin_url_default
-  elseif exists('g:myplugin_url_default')
-    let default = g:myplugin_url_default
+function! s:WebSearchDefault(arg)
+  if exists('b:websearch_url_default')
+    let default = b:websearch_url_default
+  elseif exists('g:websearch_url_default')
+    let default = g:websearch_url_default
   else
-    echom 'g:myplugin_url_default not set'
+    echom 'g:websearch_url_default not set'
     return
   end
 
@@ -93,6 +93,6 @@ function! s:MyPluginDefault(arg)
   endif
 endfunction
 
-command! -nargs=? MyPlugin call s:MyPluginDefault(<q-args>)
+command! -nargs=? WebSearch call s:WebSearchDefault(<q-args>)
 
 call s:create_mappings()
