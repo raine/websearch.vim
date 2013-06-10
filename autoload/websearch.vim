@@ -68,6 +68,11 @@ function! websearch#create_mappings()
 endfunction
 
 function! websearch#WebSearchDefault(arg)
+  if !exists('g:websearch_mappings')
+    echohl ErrorMsg | echomsg 'WebSearch: g:websearch_mappings not set' | echohl None
+    return
+  endif
+
   if exists('b:websearch_url_default')
     let default = b:websearch_url_default
   elseif exists('g:websearch_url_default')
