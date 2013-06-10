@@ -1,7 +1,17 @@
 function! s:open_url(query, url)
   let url = substitute(a:url, '{query}', s:encode_url(a:query), '')
-  let command = 'open ' . shellescape(url)
+  let command = s:open_url_command . ' ' . shellescape(url)
   call system(command)
+endfunction
+
+function! s:get_command()
+  if has('mac')
+    let cmd = 'open'
+  elseif executable('xdg-open')
+    let cmd = 'xdg-open'
+  endif
+
+  let s:open_url_command = cmd
 endfunction
 
 function! s:encode_url(str)
@@ -65,6 +75,8 @@ function! websearch#create_mappings()
       execute 'vnoremap <silent>' key ':<C-U>call <SID>visual_mode(visualmode(), ' . i . ')<CR>'
     endfor
   endif
+
+  call s:get_command()
 endfunction
 
 function! websearch#WebSearchDefault(arg)
