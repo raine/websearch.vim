@@ -63,11 +63,13 @@ function! s:visual_mode(type, i)
 endfunction
 
 function! s:create_mappings()
-  for i in range(0, len(g:websearch_mappings)-1)
-    let key = g:websearch_mappings[i][0]
-    execute 'nnoremap <silent>' key ':call <SID>run_mapping(' . i . ')<CR>'
-    execute 'vnoremap <silent>' key ':<C-U>call <SID>visual_mode(visualmode(), ' . i . ')<CR>'
-  endfor
+  if exists('g:websearch_mappings')
+    for i in range(0, len(g:websearch_mappings)-1)
+      let key = g:websearch_mappings[i][0]
+      execute 'nnoremap <silent>' key ':call <SID>run_mapping(' . i . ')<CR>'
+      execute 'vnoremap <silent>' key ':<C-U>call <SID>visual_mode(visualmode(), ' . i . ')<CR>'
+    endfor
+  endif
 endfunction
 
 function! s:WebSearchDefault(arg)
