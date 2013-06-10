@@ -78,8 +78,7 @@ function! websearch#WebSearchDefault(arg)
   elseif exists('g:websearch_url_default')
     let default = g:websearch_url_default
   else
-    echom 'g:websearch_url_default not set'
-    return
+    let default = 0
   end
 
   if a:arg ==# 'v'
