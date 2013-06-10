@@ -85,10 +85,10 @@ function! websearch#WebSearchDefault(arg)
     return
   endif
 
-  if exists('b:websearch_url_default')
-    let default = b:websearch_url_default
-  elseif exists('g:websearch_url_default')
-    let default = g:websearch_url_default
+  if exists('b:websearch_default_mapping')
+    let default = b:websearch_default_mapping
+  elseif exists('g:websearch_default_mapping')
+    let default = g:websearch_default_mapping
   else
     let default = 0
   end
