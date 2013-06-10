@@ -105,3 +105,31 @@ function! websearch#WebSearchDefault(arg)
     call s:run_mapping(default, query)
   endif
 endfunction
+
+
+function! websearch#WebSearchList()
+  if exists('g:websearch_mappings')
+    let max_len = s:max_lens_list_of_lists(g:websearch_mappings)
+    for [ key, name, url ] in g:websearch_mappings
+      echo printf('%-' . max_len[0] . 's %-' . max_len[1] . 's %s', key, name, url)
+    endfor
+  endif
+endfunction
+
+function! s:max_lens_list_of_lists(list)
+  let max_len = []
+  for e in a:list[0]
+    call insert(max_len, 0)
+  endfor
+
+  for item in a:list
+    for i in range(0, len(item)-1)
+      let len = len(item[i])
+      if max_len[i] < len
+        let max_len[i] = len
+      endif
+    endfor
+  endfor
+
+  return max_len
+endfunction
